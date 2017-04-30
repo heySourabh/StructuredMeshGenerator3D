@@ -36,13 +36,13 @@ public class SimpleHexahedralGeom implements Geometry {
      * @param numZetaPoints Number of points for defining the curves changing in
      * zeta direction.
      * @param p0 point at xi = 0, eta = 0, zeta = 0
-     * @param p1 point at xi = 0, eta = 1, zeta = 0
-     * @param p2 point at xi = 0, eta = 1, zeta = 1
-     * @param p3 point at xi = 0, eta = 0, zeta = 1
-     * @param p4 point at xi = 1, eta = 0, zeta = 0
-     * @param p5 point at xi = 1, eta = 1, zeta = 0
+     * @param p1 point at xi = 1, eta = 0, zeta = 0
+     * @param p2 point at xi = 1, eta = 1, zeta = 0
+     * @param p3 point at xi = 0, eta = 1, zeta = 0
+     * @param p4 point at xi = 0, eta = 0, zeta = 1
+     * @param p5 point at xi = 1, eta = 0, zeta = 1
      * @param p6 point at xi = 1, eta = 1, zeta = 1
-     * @param p7 point at xi = 1, eta = 0, zeta = 1
+     * @param p7 point at xi = 0, eta = 1, zeta = 1
      */
     public SimpleHexahedralGeom(int numXiPoints, int numEtaPoints, int numZetaPoints,
             Point p0, Point p1, Point p2, Point p3,
@@ -64,18 +64,18 @@ public class SimpleHexahedralGeom implements Geometry {
             Parameter xiLoc = new Parameter(i * dXi);
 
             pa = p0;
-            pb = p4;
+            pb = p1;
             eta0_zeta0[i] = Point.between(pa, pb, xiLoc);
 
-            pa = p1;
-            pb = p5;
+            pa = p3;
+            pb = p2;
             eta1_zeta0[i] = Point.between(pa, pb, xiLoc);
 
-            pa = p3;
-            pb = p7;
+            pa = p4;
+            pb = p5;
             eta0_zeta1[i] = Point.between(pa, pb, xiLoc);
 
-            pa = p2;
+            pa = p7;
             pb = p6;
             eta1_zeta1[i] = Point.between(pa, pb, xiLoc);
         }
@@ -90,18 +90,18 @@ public class SimpleHexahedralGeom implements Geometry {
             Parameter etaLoc = new Parameter(j * dEta);
 
             pa = p0;
-            pb = p1;
+            pb = p3;
             xi0_zeta0[j] = Point.between(pa, pb, etaLoc);
 
-            pa = p4;
-            pb = p5;
+            pa = p1;
+            pb = p2;
             xi1_zeta0[j] = Point.between(pa, pb, etaLoc);
 
-            pa = p3;
-            pb = p2;
+            pa = p4;
+            pb = p7;
             xi0_zeta1[j] = Point.between(pa, pb, etaLoc);
 
-            pa = p7;
+            pa = p5;
             pb = p6;
             xi1_zeta1[j] = Point.between(pa, pb, etaLoc);
         }
@@ -116,18 +116,18 @@ public class SimpleHexahedralGeom implements Geometry {
             Parameter zetaLoc = new Parameter(k * dZeta);
 
             pa = p0;
-            pb = p3;
+            pb = p4;
             xi0_eta0[k] = Point.between(pa, pb, zetaLoc);
 
-            pa = p4;
-            pb = p7;
+            pa = p1;
+            pb = p5;
             xi1_eta0[k] = Point.between(pa, pb, zetaLoc);
 
-            pa = p1;
-            pb = p2;
+            pa = p3;
+            pb = p7;
             xi0_eta1[k] = Point.between(pa, pb, zetaLoc);
 
-            pa = p5;
+            pa = p2;
             pb = p6;
             xi1_eta1[k] = Point.between(pa, pb, zetaLoc);
         }
