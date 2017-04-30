@@ -2,7 +2,7 @@ package geom;
 
 import mesh.Parameter;
 
-public class SimpleHexahedralGeom implements Geometry {
+public class HexahedronGeom implements Geometry {
 
     private final int numXiPoints;
     private final int numEtaPoints;
@@ -44,7 +44,7 @@ public class SimpleHexahedralGeom implements Geometry {
      * @param p6 point at xi = 1, eta = 1, zeta = 1
      * @param p7 point at xi = 0, eta = 1, zeta = 1
      */
-    public SimpleHexahedralGeom(int numXiPoints, int numEtaPoints, int numZetaPoints,
+    public HexahedronGeom(int numXiPoints, int numEtaPoints, int numZetaPoints,
             Point p0, Point p1, Point p2, Point p3,
             Point p4, Point p5, Point p6, Point p7) {
 

@@ -2,13 +2,12 @@ package geom;
 
 import java.util.stream.IntStream;
 import mesh.Parameter;
-import util.Range;
 
 /**
  *
  * @author Sourabh Bhat <sourabh.bhat@iitb.ac.in>
  */
-public class SimpleQuadFace implements Face {
+public class QuadFace implements Face {
 
     private final Point p0, p1, p2, p3;
     private final Point[] dirA0, dirA1, dirB0, dirB1;
@@ -23,7 +22,7 @@ public class SimpleQuadFace implements Face {
      * @param numAPoints number of points in A direction
      * @param numBPoints number of points in B direction
      */
-    public SimpleQuadFace(Point p0, Point p1, Point p2, Point p3, int numAPoints, int numBPoints) {
+    public QuadFace(Point p0, Point p1, Point p2, Point p3, int numAPoints, int numBPoints) {
         this.p0 = p0;
         this.p1 = p1;
         this.p2 = p2;
