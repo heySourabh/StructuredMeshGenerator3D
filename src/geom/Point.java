@@ -17,6 +17,14 @@ public class Point {
         this.z = z;
     }
 
+    public double dist(Point other) {
+        double dx = other.x - x;
+        double dy = other.y - y;
+        double dz = other.z - z;
+
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    }
+
     public Point add(Point p) {
         return new Point(x + p.x, y + p.y, z + p.z);
     }
@@ -50,5 +58,10 @@ public class Point {
         double z = Range.map(at.val, parameterRange, zRange);
 
         return new Point(x, y, z);
+    }
+
+    @Override
+    public String toString() {
+        return x + ", " + y + ", " + z;
     }
 }

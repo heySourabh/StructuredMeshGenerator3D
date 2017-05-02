@@ -1,9 +1,11 @@
 package io;
 
 import geom.Point;
+import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -72,28 +74,28 @@ public class MeshFileWriter {
         }
         System.out.println("Writing mesh file in vtk format: " + fileName);
 
-        try (OutputStreamWriter fileWriter
-                = new OutputStreamWriter(new FileOutputStream(fileName),
-                        StandardCharsets.UTF_8)) {
+        try (DataOutputStream dataStream = new DataOutputStream(new FileOutputStream(fileName))) {
             int numXiPoints = points.length;
             int numEtaPoints = points[0].length;
             int numZetaPoints = 1;
 
             int totalNodes = numXiPoints * numEtaPoints * numZetaPoints;
 
-            fileWriter.write("# vtk DataFile Version 2.0" + "\n");
-            fileWriter.write("Structured mesh file." + "\n");
-            fileWriter.write("ASCII" + "\n");
+            dataStream.write(("# vtk DataFile Version 2.0" + "\n").getBytes("UTF-8"));
+            dataStream.write(("Structured mesh file." + "\n").getBytes("UTF-8"));
+            dataStream.write(("BINARY" + "\n").getBytes("UTF-8"));
 
-            fileWriter.write("DATASET " + "STRUCTURED_GRID" + "\n");
-            fileWriter.write(String.format("DIMENSIONS %d %d %d", numXiPoints, numEtaPoints, numZetaPoints) + "\n");
+            dataStream.write(("DATASET " + "STRUCTURED_GRID" + "\n").getBytes("UTF-8"));
+            dataStream.write((String.format("DIMENSIONS %d %d %d", numXiPoints, numEtaPoints, numZetaPoints) + "\n").getBytes("UTF-8"));
 
-            fileWriter.write(String.format("POINTS %d %s", totalNodes, "double") + "\n");
+            dataStream.write((String.format("POINTS %d %s", totalNodes, "double") + "\n").getBytes("UTF-8"));
 
             for (int k = 0; k < numZetaPoints; k++) {
                 for (int j = 0; j < numEtaPoints; j++) {
                     for (int i = 0; i < numXiPoints; i++) {
-                        fileWriter.write(String.format("%-20f %-20f %-20f", points[i][j].x, points[i][j].y, points[i][j].z) + "\n");
+                        dataStream.writeDouble(points[i][j].x);
+                        dataStream.writeDouble(points[i][j].y);
+                        dataStream.writeDouble(points[i][j].z);
                     }
                 }
             }
@@ -106,31 +108,33 @@ public class MeshFileWriter {
         }
         System.out.println("Writing mesh file in vtk format: " + fileName);
 
-        try (OutputStreamWriter fileWriter
-                = new OutputStreamWriter(new FileOutputStream(fileName),
-                        StandardCharsets.UTF_8)) {
+        try (FileOutputStream outStream = new FileOutputStream(fileName)) {
             int numXiPoints = points.length;
             int numEtaPoints = points[0].length;
             int numZetaPoints = points[0][0].length;
 
             int totalNodes = numXiPoints * numEtaPoints * numZetaPoints;
 
-            fileWriter.write("# vtk DataFile Version 2.0" + "\n");
-            fileWriter.write("Structured mesh file." + "\n");
-            fileWriter.write("ASCII" + "\n");
+            outStream.write(("# vtk DataFile Version 2.0" + "\n").getBytes("UTF-8"));
+            outStream.write(("Structured mesh file." + "\n").getBytes("UTF-8"));
+            outStream.write(("BINARY" + "\n").getBytes("UTF-8"));
 
-            fileWriter.write("DATASET " + "STRUCTURED_GRID" + "\n");
-            fileWriter.write(String.format("DIMENSIONS %d %d %d", numXiPoints, numEtaPoints, numZetaPoints) + "\n");
+            outStream.write(("DATASET " + "STRUCTURED_GRID" + "\n").getBytes("UTF-8"));
+            outStream.write((String.format("DIMENSIONS %d %d %d", numXiPoints, numEtaPoints, numZetaPoints) + "\n").getBytes("UTF-8"));
 
-            fileWriter.write(String.format("POINTS %d %s", totalNodes, "double") + "\n");
+            outStream.write((String.format("POINTS %d %s", totalNodes, "float") + "\n").getBytes("UTF-8"));
 
+            ByteBuffer buffer = ByteBuffer.allocate(totalNodes * Float.BYTES * 3);
             for (int k = 0; k < numZetaPoints; k++) {
                 for (int j = 0; j < numEtaPoints; j++) {
                     for (int i = 0; i < numXiPoints; i++) {
-                        fileWriter.write(String.format("%-20f %-20f %-20f", points[i][j][k].x, points[i][j][k].y, points[i][j][k].z) + "\n");
+                        buffer.putFloat((float) points[i][j][k].x);
+                        buffer.putFloat((float) points[i][j][k].y);
+                        buffer.putFloat((float) points[i][j][k].z);
                     }
                 }
             }
+            outStream.write(buffer.array());
         }
     }
 }
